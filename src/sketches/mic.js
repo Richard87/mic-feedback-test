@@ -25,6 +25,7 @@ export default function sketch(p){
       // By default, it does not .connect() (to the computer speakers)
       mic.start();
       mic.getSources().then(sources => {
+        console.log(sources)
         if (sourcesUpdated)
           sourcesUpdated(sources)
       })
@@ -63,7 +64,6 @@ export default function sketch(p){
     }
 
     p.draw = () => {
-      triggerSignals()
       p.background(0);
     
       // Get the overall volume (between 0 and 1.0)
@@ -76,7 +76,8 @@ export default function sketch(p){
     
 
       // Draw the signal history
-      p.stroke([50, 0,0]);
+      p.stroke([150, 0,0]);
+      p.strokeWeight(1);
       p.beginShape()
       for (let i = 0; i < signalHistory.length; i++) {
         const y = p.map(signalHistory[i], 0, 1, canvas.height, 0);
@@ -86,6 +87,8 @@ export default function sketch(p){
 
       // Draw the mic history
       p.stroke([0, 0,255]);
+      p.strokeWeight(3);
+      // p.fill([0, 0,255])
       p.beginShape()
       for (let i = 0; i < micHistory.length; i++) {
         const y = p.map(micHistory[i], 0, 1, canvas.height, 0);
@@ -98,5 +101,7 @@ export default function sketch(p){
         micHistory.shift()
       if (signalHistory.length > canvas.width)
       signalHistory.shift()
+
+      triggerSignals()
     }
 }
